@@ -1,5 +1,5 @@
 <?php
-class Pessoa
+abstract class Pessoa
 {
     protected $endereco, $email, $dataCadastro;
 
@@ -30,6 +30,7 @@ class Pessoa
         } 
         else return false;
     }
+    abstract public function exibirDados();
    /*     
     public function getEndereco():string{
         return $this->endereco;

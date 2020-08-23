@@ -1,6 +1,6 @@
 <?php
 require_once('Pessoa.php');
-class Fisica extends Pessoa
+final class Fisica extends Pessoa
 {
     private $nome, $cpf;
     function __construct($nome, $cpf, $endereco, $email, $dataCadastro)
@@ -22,6 +22,15 @@ class Fisica extends Pessoa
             return true;
         } 
         else return false;        
+    }
+    public function exibirDados(){
+        $dados = ["nome"=>$this->nome, 
+            "cpf"=>$this->cpf, 
+            "endereco"=>$this->endereco, 
+            "email"=>$this->email, 
+            "dataCadastro"=>$this->dataCadastro
+        ];
+        return json_encode($dados);
     }
 }
 
