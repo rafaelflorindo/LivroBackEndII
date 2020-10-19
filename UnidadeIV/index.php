@@ -1,8 +1,7 @@
 <?php
     require_once('Usuario.php');
     require_once('Conexao.php');
-$t = new Conexao();
-exit;
+
     $usuario = new Usuario();
     echo "<h2>Listar Usuário:</h2>";
     $listaUsuarios = $usuario->listarUsuario();
