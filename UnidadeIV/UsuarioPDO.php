@@ -59,4 +59,39 @@ class Usuario extends ConexaoPDO{
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
     }
+    public function editarUserPreparado($id,$dados){
+        $this->setDados($dados);
+        $this->id=$id;
+        $sql = "UPDATE usuario SET nome=:NOME, email=:EMAIL, dataNascimento=:DATANASCIMENTO, telefone=:TELEFONE WHERE id= :ID";
+    
+        $stmt = $this->conectar->prepare($sql);
+       
+        $results = $stmt->execute(
+            array(
+                ":NOME"=>$this->nome, 
+                ":EMAIL"=>$this->email,
+                ":TELEFONE"=>$this->telefone, 
+                ":DATANASCIMENTO"=>$this->dataNascimento,
+                ":ID"=>$this->id
+             )
+            );
+        
+        $count = $stmt->rowCount();
+        if($count > 0) return true;
+        else return false;
+    }
+    public function deletarUserPreparado($id){
+        $this->id= $id;
+        
+        $sql = "DELETE FROM usuario WHERE id= :ID";
+    
+        $stmt = $this->conectar->prepare($sql);
+        $stmt->bindParam(":ID", $this->id);
+        $results = $stmt->execute();
+        
+        $count = $stmt->rowCount();
+        if($count > 0) return true;
+        else return false;
+
+    }
 }

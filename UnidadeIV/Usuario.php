@@ -27,6 +27,18 @@ class Usuario extends Conexao{
         else    
             return 0;
     }
+    public function editarUsuario($id, $dados){
+        $this->id = $id;
+        $this->setDados($dados);
+        
+        echo $sql = "UPDATE usuario SET nome = '$this->nome', email='$this->email', dataNascimento='$this->dataNascimento', telefone='$this->telefone' WHERE id = '$this->id'";
+
+        $retorno = $this->conectar->query($sql);
+        if ($retorno)
+            return 1;
+        else    
+            return 0;
+    }
     public function listarUsuario(){
         $sql = "SELECT * FROM usuario order by nome ASC";
 
@@ -38,6 +50,18 @@ class Usuario extends Conexao{
         }
         return json_encode($usuarios);
     }
+    public function deletarUsuario($id){
+        $this->id = $id;
+
+        $sql = "DELETE FROM usuario WHERE id = $this->id";
+
+        $retorno = $this->conectar->query($sql);
+        if ($retorno)
+            return 1;
+        else    
+            return 0;
+    }
+
     public function inserirUserPreparado($dados){
         $this->setDados($dados);
         
@@ -53,7 +77,34 @@ class Usuario extends Conexao{
             return 0;
 
     }
+    public function editarUsuarioPreparado($id, $dados){
+        $this->id = $id;
+        $this->setDados($dados);
+        
+        $sql = "UPDATE usuario SET nome = ?, email=?, dataNascimento=?, telefone=? WHERE id = ?";
 
+        $stmt = $this->conectar->prepare($sql);
+        $stmt->bind_param("ssssd", $this->nome, $this->email, $this->dataNascimento, $this->telefone, $this->id);
+        $results = $stmt->execute();
+        
+        if ($results > 0)
+            return 1;
+        else
+            return 0;
+    }
+    public function deletarUsuarioPreparado($id){
+        $this->id = $id;
+        $sql = "DELETE FROM usuario WHERE id = ?";
+        
+        $stmt = $this->conectar->prepare($sql);
+        $stmt->bind_param("d", $id);
+        
+        $results = $stmt->execute();
+        if ($results > 0)
+            return 1;
+        else
+            return 0;
+    }
     public function buscarUsuario($id){
 
         $sql = "SELECT * FROM usuario where id = ?";
@@ -66,4 +117,5 @@ class Usuario extends Conexao{
         $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         return json_encode($results);
     }
+
 }
